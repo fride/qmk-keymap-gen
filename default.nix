@@ -6,5 +6,5 @@ in
     naersk.buildPackage {
         # This dot at the end is .... strange!
         src = ./.;
-        name="kbtools"  
+        name="kbtools";
     }
