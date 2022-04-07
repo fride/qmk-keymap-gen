@@ -1,0 +1,15 @@
+/* THIS FILE WAS GENERATED!
+ *
+ * This file was generated. You may or may not want to
+ * edit it directly.
+ */
+
+#include QMK_KEYBOARD_H
+#include "keycodes.h"
+
+
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+{% for layer in layers.iter() %}
+    [{{ layer.index }}] = LAYOUT_split_3x5_2({{ layer.key_codes.join(",") }}),
+{% endfor %}
+};

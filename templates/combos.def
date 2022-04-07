@@ -1,0 +1,8 @@
+{% for combo in combos.iter() %}
+{% match combo.bindings %}
+{% when ComboBinding::KeyPress with (kp) %}
+COMB( {{ combo.name}},      KC_ESC,          KC_W, KC_E)
+{% when ComboBinding::Subs with (subs) %}
+COMB(weEsc,      KC_ESC,          KC_W, KC_E)    
+{% endmatch %}
+{% endfor %}

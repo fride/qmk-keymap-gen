@@ -1,0 +1,14 @@
+{% for home_key in home_keys %}
+    case {{ home_key.name }}:
+    if (record->event.pressed && record->tap.count > 0) {
+        if (record->event.pressed) {
+        // send advanced keycode, etc.
+        // the 16 bit version of the `tap_code` function is used here      
+        tap_code16({{home_key.code}});
+        }
+        // do not continue with default tap action
+        // if the MT was pressed or released, but not held
+        return false;
+    }
+    break;
+{% endfor %}

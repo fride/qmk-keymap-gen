@@ -1,0 +1,7 @@
+{% for layer in layers %}
+    // layer
+    {% for row in layer.key_bindings %}
+        // key
+    {% endfor %}
+
+{% endfor %}

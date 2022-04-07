@@ -1,0 +1,515 @@
+use convert_case::{Case, Casing};
+use serde::{Deserialize, Serialize};
+use std::fmt::{self, Display};
+use std::ops::Index;
+
+pub type LayerID = usize;
+pub type KeyIndex = usize;
+
+enum_str! {
+    #[derive(Serialize, Deserialize, Debug, Clone)]
+    pub enum KeyCode {
+        #[serde(rename = "KC_NO")]
+        KcNo,
+        #[serde(rename = "KC_ROLL_OVER")]
+        KcRollOver,
+        #[serde(rename = "KC_POST_FAIL")]
+        KcPostFail,
+        #[serde(rename = "KC_UNDEFINED")]
+        KcUndefined,
+        #[serde(rename = "KC_A")]
+        KcA,
+        #[serde(rename = "KC_B")]
+        KcB,
+        #[serde(rename = "KC_C")]
+        KcC,
+        #[serde(rename = "KC_D")]
+        KcD,
+        #[serde(rename = "KC_E")]
+        KcE,
+        #[serde(rename = "KC_F")]
+        KcF,
+        #[serde(rename = "KC_G")]
+        KcG,
+        #[serde(rename = "KC_H")]
+        KcH,
+        #[serde(rename = "KC_I")]
+        KcI,
+        #[serde(rename = "KC_J")]
+        KcJ,
+        #[serde(rename = "KC_K")]
+        KcK,
+        #[serde(rename = "KC_L")]
+        KcL,
+        #[serde(rename = "KC_M")]
+        KcM, // 0x10
+        #[serde(rename = "KC_N")]
+        KcN,
+        #[serde(rename = "KC_O")]
+        KcO,
+        #[serde(rename = "KC_P")]
+        KcP,
+        #[serde(rename = "KC_Q")]
+        KcQ,
+        #[serde(rename = "KC_R")]
+        KcR,
+        #[serde(rename = "KC_S")]
+        KcS,
+        #[serde(rename = "KC_T")]
+        KcT,
+        #[serde(rename = "KC_U")]
+        KcU,
+        #[serde(rename = "KC_V")]
+        KcV,
+        #[serde(rename = "KC_W")]
+        KcW,
+        #[serde(rename = "KC_X")]
+        KcX,
+        #[serde(rename = "KC_Y")]
+        KcY,
+        #[serde(rename = "KC_Z")]
+        KcZ,
+        #[serde(rename = "KC_1")]
+        Kc1,
+        #[serde(rename = "KC_2")]
+        Kc2,
+        #[serde(rename = "KC_3")]
+        Kc3, // 0x20
+        #[serde(rename = "KC_4")]
+        Kc4,
+        #[serde(rename = "KC_5")]
+        Kc5,
+        #[serde(rename = "KC_6")]
+        Kc6,
+        #[serde(rename = "KC_7")]
+        Kc7,
+        #[serde(rename = "KC_8")]
+        Kc8,
+        #[serde(rename = "KC_9")]
+        Kc9,
+        #[serde(rename = "KC_0")]
+        Kc0,
+        #[serde(rename = "KC_ENTER")]
+        KcEnter,
+        #[serde(rename = "KC_ESCAPE")]
+        KcEscape,
+        #[serde(rename = "KC_BACKSPACE")]
+        KcBackspace,
+        #[serde(rename = "KC_TAB")]
+        KcTab,
+        #[serde(rename = "KC_SPACE")]
+        KcSpace,
+        #[serde(rename = "KC_MINUS")]
+        KcMinus,
+        #[serde(rename = "KC_EQUAL")]
+        KcEqual,
+        #[serde(rename = "KC_LEFT_BRACKET")]
+        KcLeftBracket,
+        #[serde(rename = "KC_RIGHT_BRACKET")]
+        KcRightBracket, // 0x30
+        #[serde(rename = "KC_BACKSLASH")]
+        KcBackslash,
+        #[serde(rename = "KC_NONUS_HASH")]
+        KcNonusHash,
+        #[serde(rename = "KC_SEMICOLON")]
+        KcSemicolon,
+        #[serde(rename = "KC_QUOTE")]
+        KcQuote,
+        #[serde(rename = "KC_GRAVE")]
+        KcGrave,
+        #[serde(rename = "KC_COMMA")]
+        KcComma,
+        #[serde(rename = "KC_DOT")]
+        KcDot,
+        #[serde(rename = "KC_SLASH")]
+        KcSlash,
+        #[serde(rename = "KC_CAPS_LOCK")]
+        KcCapsLock,
+        #[serde(rename = "KC_F1")]
+        KcF1,
+        #[serde(rename = "KC_F2")]
+        KcF2,
+        #[serde(rename = "KC_F3")]
+        KcF3,
+        #[serde(rename = "KC_F4")]
+        KcF4,
+        #[serde(rename = "KC_F5")]
+        KcF5,
+        #[serde(rename = "KC_F6")]
+        KcF6,
+        #[serde(rename = "KC_F7")]
+        KcF7, // 0x40
+        #[serde(rename = "KC_F8")]
+        KcF8,
+        #[serde(rename = "KC_F9")]
+        KcF9,
+        #[serde(rename = "KC_F10")]
+        KcF10,
+        #[serde(rename = "KC_F11")]
+        KcF11,
+        #[serde(rename = "KC_F12")]
+        KcF12,
+        #[serde(rename = "KC_PRINT_SCREEN")]
+        KcPrintScreen,
+        #[serde(rename = "KC_SCROLL_LOCK")]
+        KcScrollLock,
+        #[serde(rename = "KC_PAUSE")]
+        KcPause,
+        #[serde(rename = "KC_INSERT")]
+        KcInsert,
+        #[serde(rename = "KC_HOME")]
+        KcHome,
+        #[serde(rename = "KC_PAGE_UP")]
+        KcPageUp,
+        #[serde(rename = "KC_DELETE")]
+        KcDelete,
+        #[serde(rename = "KC_END")]
+        KcEnd,
+        #[serde(rename = "KC_PAGE_DOWN")]
+        KcPageDown,
+        #[serde(rename = "KC_RIGHT")]
+        KcRight,
+        #[serde(rename = "KC_LEFT")]
+        KcLeft, // 0x50
+        #[serde(rename = "KC_DOWN")]
+        KcDown,
+        #[serde(rename = "KC_UP")]
+        KcUp,
+        #[serde(rename = "KC_NUM_LOCK")]
+        KcNumLock,
+        #[serde(rename = "KC_KP_SLASH")]
+        KcKpSlash,
+        #[serde(rename = "KC_KP_ASTERISK")]
+        KcKpAsterisk,
+        #[serde(rename = "KC_KP_MINUS")]
+        KcKpMinus,
+        #[serde(rename = "KC_KP_PLUS")]
+        KcKpPlus,
+        #[serde(rename = "KC_KP_ENTER")]
+        KcKpEnter,
+        #[serde(rename = "KC_KP_1")]
+        KcKp1,
+        #[serde(rename = "KC_KP_2")]
+        KcKp2,
+        #[serde(rename = "KC_KP_3")]
+        KcKp3,
+        #[serde(rename = "KC_KP_4")]
+        KcKp4,
+        #[serde(rename = "KC_KP_5")]
+        KcKp5,
+        #[serde(rename = "KC_KP_6")]
+        KcKp6,
+        #[serde(rename = "KC_KP_7")]
+        KcKp7,
+        #[serde(rename = "KC_KP_8")]
+        KcKp8, // 0x60
+        #[serde(rename = "KC_KP_9")]
+        KcKp9,
+        #[serde(rename = "KC_KP_0")]
+        KcKp0,
+        #[serde(rename = "KC_KP_DOT")]
+        KcKpDot,
+        #[serde(rename = "KC_NONUS_BACKSLASH")]
+        KcNonusBackslash,
+        #[serde(rename = "KC_APPLICATION")]
+        KcApplication,
+        #[serde(rename = "KC_KB_POWER")]
+        KcKbPower,
+        #[serde(rename = "KC_KP_EQUAL")]
+        KcKpEqual,
+        #[serde(rename = "KC_F13")]
+        KcF13,
+        #[serde(rename = "KC_F14")]
+        KcF14,
+        #[serde(rename = "KC_F15")]
+        KcF15,
+        #[serde(rename = "KC_F16")]
+        KcF16,
+        #[serde(rename = "KC_F17")]
+        KcF17,
+        #[serde(rename = "KC_F18")]
+        KcF18,
+        #[serde(rename = "KC_F19")]
+        KcF19,
+        #[serde(rename = "KC_F20")]
+        KcF20,
+        #[serde(rename = "KC_F21")]
+        KcF21, // 0x70
+        #[serde(rename = "KC_F22")]
+        KcF22,
+        #[serde(rename = "KC_F23")]
+        KcF23,
+        #[serde(rename = "KC_F24")]
+        KcF24,
+        #[serde(rename = "KC_EXECUTE")]
+        KcExecute,
+        #[serde(rename = "KC_HELP")]
+        KcHelp,
+        #[serde(rename = "KC_MENU")]
+        KcMenu,
+        #[serde(rename = "KC_SELECT")]
+        KcSelect,
+        #[serde(rename = "KC_STOP")]
+        KcStop,
+        #[serde(rename = "KC_AGAIN")]
+        KcAgain,
+        #[serde(rename = "KC_UNDO")]
+        KcUndo,
+        #[serde(rename = "KC_CUT")]
+        KcCut,
+        #[serde(rename = "KC_COPY")]
+        KcCopy,
+        #[serde(rename = "KC_PASTE")]
+        KcPaste,
+        #[serde(rename = "KC_FIND")]
+        KcFind,
+        #[serde(rename = "KC_KB_MUTE")]
+        KcKbMute,
+        #[serde(rename = "KC_KB_VOLUME_UP")]
+        KcKbVolumeUp, // 0x80
+        #[serde(rename = "KC_KB_VOLUME_DOWN")]
+        KcKbVolumeDown,
+        #[serde(rename = "KC_LOCKING_CAPS_LOCK")]
+        KcLockingCapsLock,
+        #[serde(rename = "KC_LOCKING_NUM_LOCK")]
+        KcLockingNumLock,
+        #[serde(rename = "KC_LOCKING_SCROLL_LOCK")]
+        KcLockingScrollLock,
+        #[serde(rename = "KC_LANGUAGE_9")]
+        KcLanguage9,
+        #[serde(rename = "KC_ALTERNATE_ERASE")]
+        KcAlternateErase,
+        #[serde(rename = "KC_SYSTEM_REQUEST")]
+        KcSystemRequest,
+        #[serde(rename = "KC_CANCEL")]
+        KcCancel,
+        #[serde(rename = "KC_CLEAR")]
+        KcClear,
+        #[serde(rename = "KC_PRIOR")]
+        KcPrior,
+        #[serde(rename = "KC_RETURN")]
+        KcReturn,
+        #[serde(rename = "KC_SEPARATOR")]
+        KcSeparator,
+        #[serde(rename = "KC_OUT")]
+        KcOut, // 0xA0
+        #[serde(rename = "KC_OPER")]
+        KcOper,
+        #[serde(rename = "KC_CLEAR_AGAIN")]
+        KcClearAgain,
+        #[serde(rename = "KC_CRSEL")]
+        KcCrsel,
+        #[serde(rename = "KC_EXSEL")]
+        KcExsel,
+        // contr
+        #[serde(rename = "KC_LEFT_CTRL")]
+        KcLeftCtrl,
+        #[serde(rename = "KC_LEFT_SHIFT")]
+        KcLeftShift,
+        #[serde(rename = "KC_LEFT_ALT")]
+        KcLeftAlt,
+        #[serde(rename = "KC_LEFT_GUI")]
+        KcLeftGui,
+        #[serde(rename = "KC_RIGHT_CTRL")]
+        KcRightCtrl,
+        #[serde(rename = "KC_RIGHT_SHIFT")]
+        KcRightShift,
+        #[serde(rename = "KC_RIGHT_ALT")]
+        KcRightAlt,
+        #[serde(rename = "KC_RIGHT_GUI")]
+        KcRightGui,
+    }
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+#[serde(untagged)]
+pub enum Modifier {
+    LSFT,
+    LCTL,
+    LALT,
+    LGUI,
+    RSFT,
+    RCTL,
+    RALT,
+    RGUI,
+}
+
+impl Modifier {
+    pub fn name(&self) -> &'static str {
+        match self {
+            Modifier::LSFT => "LSFT",
+            Modifier::LCTL => "LCTL",
+            Modifier::LALT => "LALT",
+            Modifier::LGUI => "LGUI",
+            Modifier::RSFT => "RSFT",
+            Modifier::RCTL => "RCTL",
+            Modifier::RALT => "RALT",
+            Modifier::RGUI => "RGUI",
+        }
+    }
+
+    pub fn short_name(&self) -> &'static str {
+        println!("short_name >> {:?}", self);
+        match self {
+            Modifier::LSFT => "S",
+            Modifier::LCTL => "C",
+            Modifier::LALT => "A",
+            Modifier::LGUI => "G",
+            Modifier::RSFT => "S",
+            Modifier::RCTL => "C",
+            Modifier::RALT => "A",
+            Modifier::RGUI => "G",
+        }
+    }
+    pub fn modified_key<A: Display>(&self, key: A) -> String {
+        format!("{}({})", self.short_name(), key)
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(untagged)]
+pub enum KeyBehaviour {
+    Press { key: KeyCode, mods: Vec<Modifier> },
+    LayerTap { key: KeyCode, layer: LayerID },
+    ModTap { key: KeyCode, modifier: Modifier },
+    Macro(String),
+    MomentaryLayer(LayerID),
+    ToLayer(LayerID),
+    ToggleLayer(LayerID),
+}
+
+impl Display for KeyBehaviour {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            KeyBehaviour::Press { key, mods } if mods.is_empty() => {
+                write!(f, "{}", key.name())
+            }
+            KeyBehaviour::Press { key, mods } => {
+                let key_str = mods.iter().fold(key.name(), |sum, m| m.modified_key(sum));
+                println!(
+                    "{}",
+                    mods.iter()
+                        .map(|m| m.short_name().to_owned())
+                        .collect::<Vec<String>>()
+                        .join(",")
+                );
+                write!(f, "{}", key_str)
+            }
+            KeyBehaviour::LayerTap { key, layer } => {
+                write!(f, "LT({}, {})", key.name(), layer)
+            }
+            _ => {
+                write!(f, "NOP")
+            }
+        }
+    }
+}
+
+pub fn mt(key: KeyCode, modifier: Modifier) -> KeyBehaviour {
+    KeyBehaviour::ModTap { key, modifier }
+}
+
+pub fn lt<A: Into<LayerID>>(key: KeyCode, layer: A) -> KeyBehaviour {
+    KeyBehaviour::LayerTap {
+        key,
+        layer: layer.into(),
+    }
+}
+
+// do I need this?
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct KeyBinding {
+    pub key: KeyBehaviour,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Combo {
+    pub name: String,
+    pub key_indexes: Vec<KeyIndex>,
+    pub behavior: KeyBehaviour,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct KeyBindings(Vec<Vec<KeyBehaviour>>);
+impl KeyBindings {
+    pub fn len(&self) -> usize {
+        self.0.iter().fold(0, |count, r| count + r.len())
+    }
+
+    pub fn get(&self, index: usize) -> Option<&KeyBehaviour> {
+        if index <= self.len() {
+            Some(&self[index])
+        } else {
+            None
+        }
+    }
+}
+
+impl std::convert::From<Vec<Vec<KeyBehaviour>>> for KeyBindings {
+    fn from(keys: Vec<Vec<KeyBehaviour>>) -> Self {
+        Self(keys)
+    }
+}
+
+impl Index<usize> for KeyBindings {
+    type Output = KeyBehaviour;
+    fn index(&self, index: usize) -> &Self::Output {
+        let mut current_index = index;
+
+        for row in &self.0 {
+            if current_index <= row.len() {
+                return &row[current_index];
+            } else {
+                current_index = current_index - row.len()
+            }
+        }
+        panic!("Index out of bounds: {}", index);
+    }
+}
+
+impl Display for KeyBindings {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let r = self
+            .0
+            .iter()
+            .map(|row| {
+                row.iter()
+                    .map(|k| format!("{}", &k))
+                    .collect::<Vec<String>>()
+                    .join(",\t")
+            })
+            .collect::<Vec<String>>()
+            .join(",\n");
+        write!(f, "{}", r)
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Layer {
+    pub name: Option<String>,
+    pub key_bindings: KeyBindings,
+}
+impl Layer {
+    pub fn new<A: std::convert::Into<KeyBindings>>(keys: A) -> Self {
+        Self {
+            name: None,
+            key_bindings: keys.into(),
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Keyboard {
+    pub combos: Vec<Combo>,
+    pub layers: Vec<Layer>,
+}
+impl Keyboard {
+    // this is not my pride ;)
+    pub fn key_at(&self, index: usize, layer_id: LayerID) -> Option<&KeyBehaviour> {
+        if let Some(layer) = &self.layers.get(layer_id) {
+            layer.key_bindings.get(index)
+        } else {
+            None
+        }
+    }
+}
